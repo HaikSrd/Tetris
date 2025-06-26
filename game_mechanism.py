@@ -3,7 +3,7 @@ import numpy as np
 
 
 
-block =  4 #np.random.randint(5)
+block =  1 #np.random.randint(5)
 shapes = {
     0: 'cross',
     1: 'lightning',
@@ -12,6 +12,7 @@ shapes = {
     4: 'line'
 }
 shape = shapes[block]
+
 if shape == 'cross':
     ones = np.array([[1,3],[1,4],[1,5],[0,4]])
 elif shape == 'lightning':
@@ -27,7 +28,6 @@ rotation_counter = 0
 while True:
     grid = np.zeros((5, 10))
     key = input()
-
     if key == 's':
         for i in range(len(ones)):
             ones[i,0] += 1
@@ -98,6 +98,27 @@ while True:
                 ones[1] += [-1, 2]
                 ones[2] += [1, 0]
                 ones[3] += [2, -1]
+                rotation_counter = 0
+        elif shape == 'lightning':
+            if rotation_counter == 0:
+                ones[0] += [1, -1]
+                ones[1] += [1,1]
+                ones[2] += [0, -2]
+                rotation_counter += 1
+            elif rotation_counter == 1:
+                ones[0] += [-1, -1]
+                ones[1] += [1,-1]
+                ones[2] += [-2, 0]
+                rotation_counter += 1
+            elif rotation_counter == 2:
+                ones[0] += [-1, 1]
+                ones[1] += [-1,-1]
+                ones[2] += [0, 2]
+                rotation_counter += 1
+            elif rotation_counter == 3:
+                ones[0] += [1, 1]
+                ones[1] += [-1,1]
+                ones[2] += [2, 0]
                 rotation_counter = 0
 
 
