@@ -155,3 +155,4 @@ while game:
                 running = False
 
         pygame.display.update()
+

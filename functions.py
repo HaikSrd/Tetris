@@ -1,6 +1,7 @@
 import numpy as np
 import pygame
 from params import *
+
 # initial takes coordinates and draws a block in there like (1,1)
 def initial(screen, cords, color):
     x, y = cords[0]*40, cords[1]*40
