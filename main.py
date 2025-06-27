@@ -1,15 +1,16 @@
 import pygame
-from background import Background
 from params import *
 import numpy as np
 import functions
 
 
 pygame.init()
+clock = pygame.time.Clock()
 
 screen = pygame.display.set_mode(screen_size)
-BG = Background(screen)
+BG = functions.Background(screen)
 clock = pygame.time.Clock()
+manipulation = functions.Shape
 
 main_grid = np.zeros((21, 10))
 for i in range(10):
@@ -17,7 +18,7 @@ for i in range(10):
 
 game = True
 while game:
-    shape, color = functions.shape_gen()
+    shape, color = manipulation.gen()
     ones = functions.ones_gen(shape)
     rotation_counter = 0
 
@@ -30,6 +31,7 @@ while game:
             main_grid = np.delete(main_grid, i, axis=0)
             main_grid = np.vstack([np.zeros((1,10)), main_grid])
 
+    counter = 0
     running = True
     while running:
         instance = np.copy(main_grid)
@@ -44,100 +46,32 @@ while game:
                     running = False
                     game = False
                 elif event.key == pygame.K_RIGHT:
-                    for i in range(len(ones)):
-                        ones[i, 1] += 1
+                    block = False
+                    for j in ones:
+                        if main_grid[j[0], j[1] + 1] == 2:
+                            block = True
+                    if not block:
+                        for i in range(len(ones)):
+                            ones[i, 1] += 1
                 elif event.key == pygame.K_LEFT:
-                    for i in range(len(ones)):
-                        ones[i, 1] -= 1
+                    block = False
+                    for j in ones:
+                        if main_grid[j[0], j[1] - 1] == 2:
+                            block = True
+                    if not block:
+                        for i in range(len(ones)):
+                            ones[i, 1] -= 1
                 elif event.key == pygame.K_DOWN:
                     for i in range(len(ones)):
                         ones[i, 0] += 1
                 elif event.key == pygame.K_UP:
-                    if shape == 'l':
-                        if rotation_counter == 0:
-                            ones[1] += [1, 1]
-                            ones[2] += [-1, -1]
-                            ones[3] += [0, -2]
-                            rotation_counter += 1
-                        elif rotation_counter == 1:
-                            ones[1] += [1, -1]
-                            ones[2] += [-1, +1]
-                            ones[3] += [-2, 0]
-                            rotation_counter += 1
-                        elif rotation_counter == 2:
-                            ones[1] += [-1, -1]
-                            ones[2] += [+1, +1]
-                            ones[3] += [0, 2]
-                            rotation_counter += 1
-                        elif rotation_counter == 3:
-                            ones[1] += [-1, +1]
-                            ones[2] += [+1, -1]
-                            ones[3] += [2, 0]
-                            rotation_counter = 0
-                    elif shape == 'cross':
-                        if rotation_counter == 0:
-                            ones[0] += [1, 1]
-                            rotation_counter += 1
-                        elif rotation_counter == 1:
-                            ones[3] += [+1, -1]
-                            rotation_counter += 1
-                        elif rotation_counter == 2:
-                            ones[2] += [-1, -1]
-                            rotation_counter += 1
-                        elif rotation_counter == 3:
-                            ones[0] += [-1, -1]
-                            ones[2] += [1, 1]
-                            ones[3] += [-1, 1]
-                            rotation_counter = 0
-                    elif shape == 'line':
-                        if rotation_counter == 0:
-                            ones[0] += [1, 0]
-                            ones[1] += [+2, 1]
-                            ones[2] += [0, -1]
-                            ones[3] += [-1, -2]
-                            rotation_counter += 1
-                        elif rotation_counter == 1:
-                            ones[0] += [0, -1]
-                            ones[1] += [1, -2]
-                            ones[2] += [-1, 0]
-                            ones[3] += [-2, 1]
-                            rotation_counter += 1
-                        elif rotation_counter == 2:
-                            ones[0] += [-1, 0]
-                            ones[1] += [-2, -1]
-                            ones[2] += [0, 1]
-                            ones[3] += [1, 2]
-                            rotation_counter += 1
-                        elif rotation_counter == 3:
-                            ones[0] += [0, 1]
-                            ones[1] += [-1, 2]
-                            ones[2] += [1, 0]
-                            ones[3] += [2, -1]
-                            rotation_counter = 0
-                    elif shape == 'lightning':
-                        if rotation_counter == 0:
-                            ones[0] += [1, -1]
-                            ones[1] += [1, 1]
-                            ones[2] += [0, -2]
-                            rotation_counter += 1
-                        elif rotation_counter == 1:
-                            ones[0] += [-1, -1]
-                            ones[1] += [1, -1]
-                            ones[2] += [-2, 0]
-                            rotation_counter += 1
-                        elif rotation_counter == 2:
-                            ones[0] += [-1, 1]
-                            ones[1] += [-1, -1]
-                            ones[2] += [0, 2]
-                            rotation_counter += 1
-                        elif rotation_counter == 3:
-                            ones[0] += [1, 1]
-                            ones[1] += [-1, 1]
-                            ones[2] += [2, 0]
-                            rotation_counter = 0
+                    ones, rotation_counter = manipulation.rotate(shape, rotation_counter, ones)
 
-        for i in ones:
-            instance[i[0], i[1]] = 1
+
+        for i in range(len(ones)):
+            if counter % 15 == 0:
+                ones[i, 0] += 1
+            instance[ones[i, 0], ones[i,1]] = 1
 
         #drawing the shape on the screen
         for i in range(20):
@@ -155,4 +89,5 @@ while game:
                 running = False
 
         pygame.display.update()
-
+        counter += 1
+        clock.tick(60)
