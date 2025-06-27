@@ -2,10 +2,10 @@ import numpy as np
 import pygame
 from params import *
 # initial takes coordinates and draws a block in there like (1,1)
-def initial(screen, top_left, color = 255):
-    x, y = top_left[0]*40, top_left[1]*40
-    pygame.draw.rect(screen, (color, color, color), [x, y, block_size,block_size], border_radius=5)
-    pygame.draw.rect(screen, (color - 50, color - 50, color - 50), [x + 4, y + 4, block_size - 8,block_size - 8], border_radius=5)
+def initial(screen, cords, color):
+    x, y = cords[0]*40, cords[1]*40
+    pygame.draw.rect(screen, color, [x, y, block_size,block_size], border_radius=5)
+    pygame.draw.rect(screen, [color[0] - 50, color[1] - 50, color[2] - 50], [x + 4, y + 4, block_size - 8,block_size - 8], border_radius=5)
 
 #gives us shapes
 def shape_gen():
@@ -16,7 +16,15 @@ def shape_gen():
         3: 'square',
         4: 'line'
     }
-    return shapes[np.random.randint(5)]
+    colors = {
+        0: [174, 230, 189],
+        1: [70, 201, 60],
+        2: [60, 93, 201],
+        3: [92, 105, 125],
+        4: [184, 51, 76]
+    }
+    random_num = np.random.randint(5)
+    return shapes[random_num], colors[random_num]
 
 #generating ones
 def ones_gen(shape):
