@@ -17,11 +17,19 @@ for i in range(10):
     main_grid[20, i] = 2
 
 game = True
+first_turn = True
+next_shape = 0
+next_color = []
 while game:
-    shape, color = manipulation.gen()
+    shape, color = next_shape, next_color
+    if first_turn:
+        shape, color = manipulation.gen()
+        first_turn = False
+
+    next_shape, next_color = manipulation.gen()
+
     ones = functions.ones_gen(shape)
     rotation_counter = 0
-
     for i in range(20):
         clear = True
         for j in range(10):
@@ -36,6 +44,8 @@ while game:
     while running:
         instance = np.copy(main_grid)
         BG.borders()
+        BG.next_block()
+        BG.draw_next_block(next_shape)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -69,7 +79,7 @@ while game:
 
 
         for i in range(len(ones)):
-            if counter % 15 == 0:
+            if counter % 15 == 0 and counter != 0:
                 ones[i, 0] += 1
             instance[ones[i, 0], ones[i,1]] = 1
 

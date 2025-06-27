@@ -152,5 +152,53 @@ class Background:
         for i in range(10):
             pygame.draw.line(self.screen, (50,50,50), (40*i, 0), (40*i, screen_size[1]), 4)
         for i in range(20):
-            pygame.draw.line(self.screen, (50,50,50), (0,40*i), (screen_size[0], 40*i), 4)
+            pygame.draw.line(self.screen, (50,50,50), (0,40*i), (screen_size[0] - border_size, 40*i), 4)
+        pygame.draw.line(self.screen, (50,50,50), (screen_size[0] - border_size, 0), (screen_size[0] - border_size, screen_size[1]), 6)
 
+        #need to make a 4*4 block that shows the next piece
+    def next_block(self):
+        left = screen_size[0] - (border_size/2) - 2*block_size
+        right = screen_size[0] - (border_size/2) + 2*block_size
+        bottom = next_block_top + 4*block_size
+        size = 4*block_size
+        pygame.draw.rect(self.screen,(50,50,50), pygame.Rect(left - 10, next_block_top - 10, size + 23, size + 23), width = 6)
+
+
+
+    def draw_next_block(self, next_block):
+        shape = ones_gen(next_block)
+        shape = shape.astype('float64')
+        shape[:,1] -= 3.0
+        colors = {
+            0: [174, 230, 189],
+            1: [70, 201, 60],
+            2: [60, 93, 201],
+            3: [92, 105, 125],
+            4: [184, 51, 76]
+        }
+        left = screen_size[0] - (border_size / 2) - 2 * block_size
+
+        if next_block == "square":
+            shape[:,0] += 1
+            color = colors[3]
+        elif next_block == "lightning":
+            shape[:, 0] += 0.5
+            color = colors[1]
+        elif next_block == "cross":
+            shape[:, 0] += 1
+            shape[:, 1] += 0.5
+            color = colors[0]
+        elif next_block == "l":
+            shape[:, 0] += 0.5
+            color = colors[2]
+        elif next_block == "line":
+            shape[:, 1] += 0.5
+            color = colors[4]
+
+        for i in shape:
+            pygame.draw.rect(self.screen, color,
+                             (left + i[1] * block_size, next_block_top + i[0] * block_size, block_size, block_size),
+                             border_radius=5)
+            pygame.draw.rect(self.screen, np.array(color) - 50,
+                             (left + i[1] * block_size + 4, next_block_top + i[0] * block_size + 4, block_size - 8,
+                              block_size - 8), border_radius=5)
