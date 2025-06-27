@@ -32,11 +32,11 @@ class Shape:
             4: 'line'
         }
         colors = {
-            0: [174, 230, 189],
-            1: [70, 201, 60],
-            2: [60, 93, 201],
-            3: [92, 105, 125],
-            4: [184, 51, 76]
+            0: cross_color,
+            1: lightning_color,
+            2: l_color,
+            3: square_color,
+            4: line_color
         }
         random_num = np.random.randint(5)
         return shapes[random_num], colors[random_num]
@@ -150,10 +150,10 @@ class Background:
     def borders(self):
         self.screen.fill(background_color)
         for i in range(10):
-            pygame.draw.line(self.screen, (50,50,50), (40*i, 0), (40*i, screen_size[1]), 4)
+            pygame.draw.line(self.screen, border_color, (40*i, 0), (40*i, screen_size[1]), 4)
         for i in range(20):
-            pygame.draw.line(self.screen, (50,50,50), (0,40*i), (screen_size[0] - border_size, 40*i), 4)
-        pygame.draw.line(self.screen, (50,50,50), (screen_size[0] - border_size, 0), (screen_size[0] - border_size, screen_size[1]), 6)
+            pygame.draw.line(self.screen, border_color, (0,40*i), (screen_size[0] - border_size, 40*i), 4)
+        pygame.draw.line(self.screen, border_color, (screen_size[0] - border_size, 0), (screen_size[0] - border_size, screen_size[1]), 6)
 
         #need to make a 4*4 block that shows the next piece
     def next_block(self):
@@ -161,7 +161,7 @@ class Background:
         right = screen_size[0] - (border_size/2) + 2*block_size
         bottom = next_block_top + 4*block_size
         size = 4*block_size
-        pygame.draw.rect(self.screen,(50,50,50), pygame.Rect(left - 10, next_block_top - 10, size + 23, size + 23), width = 6)
+        pygame.draw.rect(self.screen,border_color, pygame.Rect(left - 10, next_block_top - 10, size + 23, size + 23), width = 6)
 
 
 
@@ -170,11 +170,11 @@ class Background:
         shape = shape.astype('float64')
         shape[:,1] -= 3.0
         colors = {
-            0: [174, 230, 189],
-            1: [70, 201, 60],
-            2: [60, 93, 201],
-            3: [92, 105, 125],
-            4: [184, 51, 76]
+            0: cross_color,
+            1: lightning_color,
+            2: l_color,
+            3: square_color,
+            4: line_color
         }
         left = screen_size[0] - (border_size / 2) - 2 * block_size
 
