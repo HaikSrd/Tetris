@@ -32,6 +32,10 @@ while game:
     next_shape, next_color = manipulation.gen()
 
     ones = functions.ones_gen(shape)
+    for i in ones:
+        if main_grid[i[0],i[1]] == 2:
+            game = False
+
     rotation_counter = 0
     for i in range(20):
         clear = True
