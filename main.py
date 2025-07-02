@@ -34,7 +34,11 @@ while game:
     ones = functions.ones_gen(shape)
     for i in ones:
         if main_grid[i[0],i[1]] == 2:
-            game = False
+            main_grid = np.zeros((21, 10))
+            for i in range(10):
+                main_grid[20, i] = 2
+            lines_cleared += 1
+            in_loop_clear += 1
 
     rotation_counter = 0
     for i in range(20):

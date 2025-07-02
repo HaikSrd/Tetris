@@ -38,7 +38,7 @@ class Shape:
             3: square_color,
             4: line_color
         }
-        random_num = np.random.randint(5)
+        random_num = 1 #np.random.randint(5)
         return shapes[random_num], colors[random_num]
 
     @staticmethod
