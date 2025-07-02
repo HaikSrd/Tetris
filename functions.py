@@ -147,8 +147,10 @@ class Shape:
 class Background:
     def __init__(self, screen):
         self.screen = screen
+
     def borders(self):
         self.screen.fill(background_color)
+
         for i in range(10):
             pygame.draw.line(self.screen, border_color, (40*i, 0), (40*i, screen_size[1]), 4)
         for i in range(20):
@@ -161,7 +163,7 @@ class Background:
         right = screen_size[0] - (border_size/2) + 2*block_size
         bottom = next_block_top + 4*block_size
         size = 4*block_size
-        pygame.draw.rect(self.screen,border_color, pygame.Rect(left - 10, next_block_top - 10, size + 23, size + 23), width = 6)
+        pygame.draw.rect(self.screen,border_color, pygame.Rect(left - 10, next_block_top - 10, size + 23, size + 23), width = 6, border_radius= 5)
 
 
 
@@ -202,3 +204,18 @@ class Background:
             pygame.draw.rect(self.screen, np.array(color) - 50,
                              (left + i[1] * block_size + 4, next_block_top + i[0] * block_size + 4, block_size - 8,
                               block_size - 8), border_radius=5)
+
+    def scroing_system(self, lines = 0, score = 0):
+        font = pygame.font.Font(Font, 36)
+        def write(text, pos):
+            sent = font.render(text, True, border_color)
+            text_rect = sent.get_rect(center = pos)
+            self.screen.blit(sent, text_rect)
+        left = screen_size[0] - (border_size / 2) - line_grid_size_x/2
+        pygame.draw.rect(self.screen, border_color, (left,line_grid_y, line_grid_size_x,line_grid_size_y), width = 6, border_radius= 5)
+        pygame.draw.rect(self.screen, border_color, (left,score_grid_y, line_grid_size_x,line_grid_size_y), width = 6, border_radius= 5)
+        write("Lines Cleared", (screen_size[0] - border_size/2, line_grid_y + 2.5*line_grid_size_y/2))
+        write(str(lines), (screen_size[0] - border_size/2, line_grid_y + line_grid_size_y/2))
+
+        write("Score", (screen_size[0] - border_size / 2, score_grid_y + 2.5 * line_grid_size_y / 2))
+        write(str(score), (screen_size[0] - border_size / 2, score_grid_y + line_grid_size_y / 2))

@@ -11,3 +11,10 @@ line_color = [184, 51, 76]
 
 background_color = (64, 68, 77)
 border_color = (50,50,50)
+
+line_grid_size_x = 250
+line_grid_size_y = 70
+line_grid_y = 600
+score_grid_y = 450
+
+Font = None
