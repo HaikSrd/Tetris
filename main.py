@@ -82,26 +82,34 @@ while game:
                     running = False
                     game = False
                 elif event.key == pygame.K_RIGHT:
-                    block = False
-                    for j in ones:
-                        if main_grid[j[0], j[1] + 1] == 2:
-                            block = True
-                    if not block:
-                        for i in range(len(ones)):
-                            ones[i, 1] += 1
+                    if np.max(ones[:,-1]) != 9:
+                        block = False
+                        for j in ones:
+                            if main_grid[j[0], j[1] + 1] == 2:
+                                block = True
+                        if not block:
+                            for i in range(len(ones)):
+                                ones[i, 1] += 1
                 elif event.key == pygame.K_LEFT:
-                    block = False
-                    for j in ones:
-                        if main_grid[j[0], j[1] - 1] == 2:
-                            block = True
-                    if not block:
-                        for i in range(len(ones)):
-                            ones[i, 1] -= 1
+                    if np.min(ones[:,-1]) != 0:
+                        block = False
+                        for j in ones:
+                            if main_grid[j[0], j[1] - 1] == 2:
+                                block = True
+                        if not block:
+                            for i in range(len(ones)):
+                                ones[i, 1] -= 1
                 elif event.key == pygame.K_DOWN:
                     for i in range(len(ones)):
                         ones[i, 0] += 1
                 elif event.key == pygame.K_UP:
-                    ones, rotation_counter = manipulation.rotate(shape, rotation_counter, ones)
+                    one_two = np.copy(ones)
+                    new_ones, new_rotation_counter = manipulation.rotate(shape, rotation_counter, ones)
+                    if np.max(new_ones[:,-1]) <= 9 and np.min(new_ones[:,-1] >= 0):
+                        ones = new_ones
+                        rotation_counter = new_rotation_counter
+                    else:
+                        ones = one_two
                 elif event.key == pygame.K_SPACE: # gotto add the space button that brings the blok all the way down at once
                     pass
 
