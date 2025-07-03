@@ -5,7 +5,10 @@ import functions
 
 
 pygame.init()
+pygame.mixer.init()
 clock = pygame.time.Clock()
+pygame.mixer.music.load("Tetris.mp3")
+pygame.mixer.music.play(-1)
 
 screen = pygame.display.set_mode(screen_size)
 BG = functions.Background(screen)
